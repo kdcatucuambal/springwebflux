@@ -1,6 +1,7 @@
 package com.kd.springboot.webflux.app;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -39,7 +40,11 @@ public class SpringbootwebfluxApplication implements CommandLineRunner {
 				new Product("Lenovo Laptop 400X", new BigDecimal("600.15")),
 				new Product("Bazuka Headphone", new BigDecimal("89.50")),
 				new Product("Keyboard TKA3", new BigDecimal("45.00")),
-				new Product("Touch Rix 1.9", new BigDecimal("11.10"))).flatMap(product -> productDao.save(product))
+				new Product("Touch Rix 1.9", new BigDecimal("11.10")))
+				.flatMap(product -> {
+					product.setCreatedAt(new Date());
+					return productDao.save(product);
+					})
 				.subscribe(product -> log.info(product.toString()));
 
 	}
